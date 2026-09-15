@@ -1,11 +1,11 @@
 class Customer:
-    def __init__(self, name, grade="basic"):
+    def __init__(self, name, grade = "basic"):
         self.name = name
         self.grade = grade
         self.points = 0
 
     def add_points(self, amount):
-        self.points += amount * 0.05  # 구매액의 5% 적립
+        self.points += amount * 0.10  # 구매액의 5% 적립
 
     def get_discount_rate(self):
         if self.grade == "vip":
@@ -13,7 +13,9 @@ class Customer:
         return 0.03  # 기본 고객은 3% 할인
 
     def get_discount(self):
-        return self.get_discount_rate()
+        if self.grade == "vip":
+            return 0.1 # vip 고객은 10% 할인
+        return 0.03# 기본 고객은 3퍼 할인
 
     def summary(self):
         return f"[{self.grade}]{self.name} (포인트: {self.points})"
@@ -26,15 +28,15 @@ class Order:
         self.customer = customer          
         self.items = items or []  # 튜플의 리스트 예시: [(상품명, 가격)]
  
-    def add_item(self, name , price):
+     def add_item(self, name , price):
         self.items.append((name, price))
  
-    def total_price(self):
+     def total_price(self):
         subtotal = sum(price for _, price in self.items)
         discount = self.customer.get_discount_rate()
         return int(subtotal * (1 - discount))
- 
-    def pay(self):
+  
+     def pay(self):
         total = self.total_price()
         self.customer.add_points(total)
         return total
